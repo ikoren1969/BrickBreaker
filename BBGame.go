@@ -32,7 +32,7 @@ func buildScene(blocks [][]blocLoc){
 		for colsCounter:=0; colsCounter<iNumberOfCols; colsCounter++ {
 			blocks[rowsCounter][colsCounter].iCol=colsCounter
 			blocks[rowsCounter][colsCounter].iRow=rowsCounter
-			blocks[rowsCounter][colsCounter].iColor = rand.Intn(3)
+			blocks[rowsCounter][colsCounter].iColor = rand.Intn(3)  // 0 - empty block, 1-blue, 2-red
 			fmt.Printf("%d",blocks[rowsCounter][colsCounter].iColor)
 		}
 	}
