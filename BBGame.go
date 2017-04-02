@@ -14,7 +14,7 @@ type blocLoc struct {
 }
 
 
-const iNumberOfRows int = 10
+const iNumberOfRows int = 12
 const iNumberOfCols int = 5
 
 
