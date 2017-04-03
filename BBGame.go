@@ -16,10 +16,6 @@ type blocLoc struct {
 }
 
 
-const iNumberOfRows int = 12
-const iNumberOfCols int = 5
-
-
 type jsonobject struct {
 	Object ObjectType
 }
@@ -34,19 +30,24 @@ type DatabasesType struct {
 	ICols   int
 }
 
+
+var jsontype jsonobject
+
 func main() {
 
-	fmt.Println("reading configuration...")
 	readConfig()
-	blocks := prepareBlockArray(1)
-	buildScene(blocks)
+	for f:=0;f<jsontype.Object.ScenesNumber;f++ {
+		fmt.Println("Scene number:", f+1)
+		blocks := prepareBlockArray(f)
+		buildScene(blocks, f)
+	}
 }
 
-func buildScene(blocks [][]blocLoc){
+func buildScene(blocks [][]blocLoc, iSceneNumber int){
 
-	for rowsCounter:=0; rowsCounter<iNumberOfRows; rowsCounter++ {
+	for rowsCounter:=0; rowsCounter<jsontype.Object.Databases[iSceneNumber].IRows; rowsCounter++ {
 		fmt.Println("\nRow:",rowsCounter)
-		for colsCounter:=0; colsCounter<iNumberOfCols; colsCounter++ {
+		for colsCounter:=0; colsCounter<jsontype.Object.Databases[iSceneNumber].ICols; colsCounter++ {
 			blocks[rowsCounter][colsCounter].iCol=colsCounter
 			blocks[rowsCounter][colsCounter].iRow=rowsCounter
 			blocks[rowsCounter][colsCounter].iColor = rand.Intn(3)  // 0 - empty block, 1-blue, 2-red
@@ -59,9 +60,9 @@ func buildScene(blocks [][]blocLoc){
 
 // Prepare a dynamic two dimensional array to hold the blocLoc struct
 func prepareBlockArray(iSceneNumber int)[][]blocLoc {
-	blocks := make([][]blocLoc,iNumberOfRows)
-	for f:=0;f<iNumberOfRows;f++ {
-		blocks[f] = make([]blocLoc,iNumberOfCols)
+	blocks := make([][]blocLoc, jsontype.Object.Databases[iSceneNumber].IRows)
+	for f:=0;f<jsontype.Object.Databases[iSceneNumber].IRows;f++ {
+		blocks[f] = make([]blocLoc,jsontype.Object.Databases[iSceneNumber].ICols)
 	}
 	return blocks
 }
@@ -74,7 +75,7 @@ func readConfig(){
 	dat, err := ioutil.ReadFile("config/general.json")
 	check(err)
 
-	var jsontype jsonobject
+
 	json.Unmarshal(dat, &jsontype)
 
 }
